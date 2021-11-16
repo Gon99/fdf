@@ -26,7 +26,6 @@ typedef struct f_stack
 {
 	int	height;
 	int	width;
-	int	**map;
 	int	**matrix;
 }	t_fstack;
 

@@ -12,48 +12,77 @@
 
 #include "../includes/fdf.h"
 
-static void	init_map_data(char *line, t_fstack *f_stack)
+static int	get_height(int fd)
+{
+	int	h;
+	char	*line;
+
+	h = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+		h++;
+	}
+	free(line);
+	close(fd);
+	return (h);
+}
+
+static void	init_map_data(char *file, int height, t_fstack *f_stack)
 {
 	int	c;
-	int	w;
-	int	h;
+	char	*line;
+	int	fd;
+	//char	**sp;
 
 	c = -1;
 	w = 0;
-	h = 0;
-	while (line[++c])
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		//handle error
+	f_stack->height = height;
+	printf("H: %d\n", height);
+	line = get_next_line(fd);
+	while (line)
 	{
-		if (line[c] == '\n')
-			h++;
-		if (line[c] != ' ' && line[c] != '\n')
-			w++;
+		sp = ft_split(line, ' ');
+		line = get_next_line(fd);
+	}
+	/*printf("L: %s\n", line);
+	sp = ft_split(line, ' ');
+	int x = 0;
+	while (sp[x])
+	{
+		printf("SP: %s\n", sp[x]);
+		x++;
 	}
 	f_stack->width = w;
 	f_stack->height = h;
-	free(line);
+	//free(line);*/
 }
 
-static int	error_map(char *line, t_fstack *f_stack)
+/*static int	error_map(char *line, t_fstack *f_stack)
 {
 	int		i;
-	char	**sp;
 	int		r;
 
 	i = 0;
 	r = 0;
-	sp = ft_split(line, ' ');
-	if (!sp)
-		return (1);
-	while (sp[i])
+	printf("L: %s\n", line);
+	while (line[i])
 	{
-		free(sp[i]);
+		if (line[i] != '\n' && line[i] != ' ')
+			r++;
 		i++;
 	}
-	free(sp);
-	if (f_stack->width != i)
-		r = 1;
-	return (r);
-}
+	printf("W: %d\n", f_stack->width);
+	printf("I: %d\n", r);
+	if (f_stack->width != r)
+		return (1);
+	return (0);
+}*/
 
 /*void	leaks()
 {
@@ -62,8 +91,8 @@ static int	error_map(char *line, t_fstack *f_stack)
 
 int main(int argc, char **argv)
 {
-	int			fd;
-	char		*line;
+	int		fd;
+	int		height;
 	t_fstack	f_stack;
 
 	//atexit(leaks);
@@ -75,18 +104,7 @@ int main(int argc, char **argv)
 		perror("zsh");
 		return (0);
 	}
-	line = get_next_line(fd);
-	init_map_data(line, &f_stack);
-	while (line)
-	{
-		if (error_map(line, &f_stack))
-		{
-			printf("Error\n");
-			return (0);
-		}
-		line = get_next_line(fd);
-		free(line);
-	}
-	printf("H: %d\n", f_stack.height);
+	height = get_height(fd);
+	init_map_data(argv[1], height, &f_stack);
 	return (1);
 }
