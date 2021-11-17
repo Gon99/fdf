@@ -6,31 +6,42 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/15 18:19:02 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/17 17:18:10 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-static int	get_height(int fd)
+static void	init_height_width(int fd, t_fstack *f_stack)
 {
-	int	h;
+	int		c;
 	char	*line;
+	char	**sp;
 
-	h = 0;
 	line = get_next_line(fd);
+	sp = ft_split(line, ' ');
+	if (!sp)
+		return ;
+	c = 0;
+	while (sp[c])
+	{
+		if (sp[c][0] == '0' || ft_atoi(sp[c]) != 0)
+			f_stack->width++;
+		free(sp[c]);
+		c++;
+	}
+	free(sp);
 	while (line)
 	{
 		free(line);
 		line = get_next_line(fd);
-		h++;
+		f_stack->height++;
 	}
-	free(line);
 	close(fd);
-	return (h);
+	free(line);
 }
 
-static void	init_map_data(char *file, int height, t_fstack *f_stack)
+/*static void	init_map_data(char *file, int height, t_fstack *f_stack)
 {
 	int	c;
 	char	*line;
@@ -38,7 +49,6 @@ static void	init_map_data(char *file, int height, t_fstack *f_stack)
 	//char	**sp;
 
 	c = -1;
-	w = 0;
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		//handle error
@@ -50,7 +60,7 @@ static void	init_map_data(char *file, int height, t_fstack *f_stack)
 		sp = ft_split(line, ' ');
 		line = get_next_line(fd);
 	}
-	/*printf("L: %s\n", line);
+	printf("L: %s\n", line);
 	sp = ft_split(line, ' ');
 	int x = 0;
 	while (sp[x])
@@ -60,8 +70,8 @@ static void	init_map_data(char *file, int height, t_fstack *f_stack)
 	}
 	f_stack->width = w;
 	f_stack->height = h;
-	//free(line);*/
-}
+	//free(line);
+}*/
 
 /*static int	error_map(char *line, t_fstack *f_stack)
 {
@@ -84,6 +94,60 @@ static void	init_map_data(char *file, int height, t_fstack *f_stack)
 	return (0);
 }*/
 
+
+static void init_matrix(char *file, t_fstack *f_stack)
+{
+	int		fd;
+	char	*line;
+	char	**sp;
+	int		i;
+	int		j;
+
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+		return ;
+	f_stack->matrix = malloc(sizeof(char *) * f_stack->height + 1);
+	if (!f_stack->matrix)
+		return ;
+	line = get_next_line(fd);
+	j = 0;
+	while (line)
+	{
+		sp = ft_split(line, ' ');
+		if (!sp)
+			return;
+		i = 0;
+		while (sp[i])
+		{
+			f_stack->matrix[i] = malloc(sizeof(char *) * f_stack->width + 1);
+			if (!f_stack->matrix)
+				return ;
+			if (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
+				f_stack->matrix[j][i] = ft_atoi(sp[i]);
+			free(sp[i]);
+			i++;
+		}
+		free(sp);
+		free(line);
+		line = get_next_line(fd);
+		j++;
+	}
+	free(line);
+}
+
+/*void	free_matrix(t_fstack *f_stack)
+{
+	int	i;
+
+	i = 0;
+	while (i < f_stack->height)
+	{
+		free(f_stack->matrix[i]);
+		i++;
+	}
+	free(f_stack->matrix);
+}*/
+
 /*void	leaks()
 {
 	system("leaks -q fdf");
@@ -92,10 +156,9 @@ static void	init_map_data(char *file, int height, t_fstack *f_stack)
 int main(int argc, char **argv)
 {
 	int		fd;
-	int		height;
 	t_fstack	f_stack;
 
-	//atexit(leaks);
+//	atexit(leaks);
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
@@ -104,7 +167,9 @@ int main(int argc, char **argv)
 		perror("zsh");
 		return (0);
 	}
-	height = get_height(fd);
-	init_map_data(argv[1], height, &f_stack);
+	init_height_width(fd, &f_stack);
+	init_matrix(argv[1], &f_stack);
+	draw_matrix(&f_stack);
+	//free_matrix(&f_stack);
 	return (1);
 }
