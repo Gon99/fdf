@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/17 16:27:41 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/22 16:35:14 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <mlx.h>
+# include <math.h>
 
 # ifndef BUFFER_SIZE
 # define BUFFER_SIZE 1
@@ -29,6 +30,15 @@ typedef struct f_stack
 	int	width;
 	int	**matrix;
 }	t_fstack;
+
+typedef struct s_data
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}	t_data;
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
