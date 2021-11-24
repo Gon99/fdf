@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/17 17:18:10 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:51:53 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ static void	init_height_width(int fd, t_fstack *f_stack)
 	{
 		if (sp[c][0] == '0' || ft_atoi(sp[c]) != 0)
 			f_stack->width++;
-		free(sp[c]);
+		//free(sp[c]);
 		c++;
 	}
-	free(sp);
+	//free(sp);
 	while (line)
 	{
-		free(line);
+		//free(line);
 		line = get_next_line(fd);
 		f_stack->height++;
 	}
 	close(fd);
-	free(line);
+	//free(line);
 }
 
 /*static void	init_map_data(char *file, int height, t_fstack *f_stack)
@@ -124,15 +124,15 @@ static void init_matrix(char *file, t_fstack *f_stack)
 				return ;
 			if (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
 				f_stack->matrix[j][i] = ft_atoi(sp[i]);
-			free(sp[i]);
+			//free(sp[i]);
 			i++;
 		}
-		free(sp);
-		free(line);
+		//free(sp);
+		//free(line);
 		line = get_next_line(fd);
 		j++;
 	}
-	free(line);
+	//free(line);
 }
 
 /*void	free_matrix(t_fstack *f_stack)
@@ -155,7 +155,7 @@ static void init_matrix(char *file, t_fstack *f_stack)
 
 int main(int argc, char **argv)
 {
-	int		fd;
+	int			fd;
 	t_fstack	f_stack;
 
 //	atexit(leaks);
@@ -169,6 +169,7 @@ int main(int argc, char **argv)
 	}
 	init_height_width(fd, &f_stack);
 	init_matrix(argv[1], &f_stack);
+	init_mlx(&f_stack);
 	draw_matrix(&f_stack);
 	//free_matrix(&f_stack);
 	return (1);

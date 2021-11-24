@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/22 16:35:14 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/24 16:42:22 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@
 
 typedef struct f_stack
 {
-	int	height;
-	int	width;
-	int	**matrix;
-}	t_fstack;
-
-typedef struct s_data
-{
+	int		height;
+	int		width;
+	int		**matrix;
+	int		zoom;
+	void	*mlx;
+	void	*mlx_win;
 	void	*img;
 	char	*addr;
 	int		bpp;
 	int		line_length;
 	int		endian;
-}	t_data;
+	int		color;
+}	t_fstack;
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -46,5 +46,6 @@ size_t	ft_strlen(char const *str);
 char	**ft_split(char const *s, char c);
 int		ft_atoi(char const *s);
 void	draw_matrix(t_fstack *f_stack);
+void	init_mlx(t_fstack *f_stack);
 
 #endif
