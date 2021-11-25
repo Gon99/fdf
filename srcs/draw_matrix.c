@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/24 16:51:51 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/25 18:06:25 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,13 @@ int	get_max(int a, int b)
 	return (r);
 }
 
-void	bresenham(int x, int y, int x1, int y1, t_fstack *f_stack)
+void	isometric(float *x, float *y, int z)
+{
+	*x = (*x - *y) * cos(0.8);
+	*y = (*x + *y) * sin(0.8) - z;
+}
+
+void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 {
 	int	dx;
 	int	dy;
@@ -48,8 +54,6 @@ void	bresenham(int x, int y, int x1, int y1, t_fstack *f_stack)
 	int	z1;
 
 	z = f_stack->matrix[(int)y][(int)x];
-	printf("p: %d\n", f_stack->matrix[3][3]);
-	printf("Z: %d\n", z);
 	z1 = f_stack->matrix[(int)y1][(int)x1];
 	x *= f_stack->zoom;
 	x1 *= f_stack->zoom;
@@ -57,6 +61,8 @@ void	bresenham(int x, int y, int x1, int y1, t_fstack *f_stack)
 	y1 *= f_stack->zoom;
 	dx = x1 - x;
 	dy = y1 - y;
+	//isometric(&x, &y, z);
+	//isometric(&x1, &y1, z);
 	dx /= get_max(get_mod(dx), get_mod(dy));
 	dy /= get_max(get_mod(dx), get_mod(dy));
 	f_stack->color = 0xffffff;

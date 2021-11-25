@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/24 16:51:53 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/25 12:46:24 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static void init_matrix(char *file, t_fstack *f_stack)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return ;
-	f_stack->matrix = malloc(sizeof(char *) * f_stack->height + 1);
+	f_stack->matrix = malloc(sizeof(int **) * f_stack->height + 1);
 	if (!f_stack->matrix)
 		return ;
 	line = get_next_line(fd);
@@ -117,16 +117,17 @@ static void init_matrix(char *file, t_fstack *f_stack)
 		if (!sp)
 			return;
 		i = 0;
+		f_stack->matrix[j] = malloc(sizeof(int*) * f_stack->width + 1);
+		if (!f_stack->matrix[i])
+			return ;
 		while (sp[i])
 		{
-			f_stack->matrix[i] = malloc(sizeof(char *) * f_stack->width + 1);
-			if (!f_stack->matrix)
-				return ;
 			if (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
 				f_stack->matrix[j][i] = ft_atoi(sp[i]);
 			//free(sp[i]);
 			i++;
 		}
+		//printf("\n");
 		//free(sp);
 		//free(line);
 		line = get_next_line(fd);
