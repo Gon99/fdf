@@ -6,13 +6,13 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/25 12:46:24 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/29 17:03:30 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-static void	init_height_width(int fd, t_fstack *f_stack)
+/*static void	init_height_width(int fd, t_fstack *f_stack)
 {
 	int		c;
 	char	*line;
@@ -40,7 +40,7 @@ static void	init_height_width(int fd, t_fstack *f_stack)
 	close(fd);
 	//free(line);
 }
-
+*/
 /*static void	init_map_data(char *file, int height, t_fstack *f_stack)
 {
 	int	c;
@@ -95,7 +95,7 @@ static void	init_height_width(int fd, t_fstack *f_stack)
 }*/
 
 
-static void init_matrix(char *file, t_fstack *f_stack)
+/*static void init_matrix(char *file, t_fstack *f_stack)
 {
 	int		fd;
 	char	*line;
@@ -134,7 +134,7 @@ static void init_matrix(char *file, t_fstack *f_stack)
 		j++;
 	}
 	//free(line);
-}
+}*/
 
 /*void	free_matrix(t_fstack *f_stack)
 {

@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/25 17:12:47 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/29 17:35:07 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,11 @@ char	**ft_split(char const *s, char c);
 int		ft_atoi(char const *s);
 void	draw_matrix(t_fstack *f_stack);
 void	init_mlx(t_fstack *f_stack);
+int		get_mod(float i);
+int		get_max(int a, int b);
+void	isometric(float *x, float *y, int z);
+void	init_height_width(int fd, t_fstack *f_stack);
+void	init_matrix(char *file, t_fstack *f_stack);
+int		has_comma(char *str);
 
 #endif

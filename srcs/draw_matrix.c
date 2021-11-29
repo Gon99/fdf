@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/25 18:06:25 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:09:47 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,57 +20,45 @@ void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int	get_mod(float i)
-{
-	int	r;
-
-	r = i;
-	if (i < 0)
-		r = -i;
-	return (r);
-}
-
-int	get_max(int a, int b)
-{
-	int	r;
-
-	r = a;
-	if (b > a)
-		r = b;
-	return (r);
-}
-
-void	isometric(float *x, float *y, int z)
-{
-	*x = (*x - *y) * cos(0.8);
-	*y = (*x + *y) * sin(0.8) - z;
-}
-
 void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 {
-	int	dx;
-	int	dy;
-	int	z;
-	int	z1;
+	float	dx;
+	float	dy;
+	int		z;
+	int		z1;
+	int		max;
 
 	z = f_stack->matrix[(int)y][(int)x];
 	z1 = f_stack->matrix[(int)y1][(int)x1];
+	
 	x *= f_stack->zoom;
-	x1 *= f_stack->zoom;
 	y *= f_stack->zoom;
+	x1 *= f_stack->zoom;
 	y1 *= f_stack->zoom;
+	
+	f_stack->color = 0xffffff;
+	
+	isometric(&x, &y, z);
+	isometric(&x1, &y1, z1);
+	
+	x += 450;
+	y += 450;
+	x1 += 450;
+	y1 += 450;
+	
 	dx = x1 - x;
 	dy = y1 - y;
-	//isometric(&x, &y, z);
-	//isometric(&x1, &y1, z);
-	dx /= get_max(get_mod(dx), get_mod(dy));
-	dy /= get_max(get_mod(dx), get_mod(dy));
-	f_stack->color = 0xffffff;
-	if (z > 0)
+
+	max = get_max(get_mod(dx), get_mod(dy));
+
+	dx /= max;
+	dy /= max;
+	if (z > 0 || z1)
 		f_stack->color = 0xe80c0c;
 	//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, 0xffffff);
 	while ((int)(x - x1) || (int)(y - y1))
 	{
+		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, f_stack->color);
 		my_mlx_pixel_put(f_stack, x, y, f_stack->color);
 		x += dx;
 		y += dy;
@@ -81,17 +69,7 @@ void	draw_matrix(t_fstack *f_stack)
 {
 	int	x;
 	int	y;
-	//t_data img;
-
-	/*void	*mlx;
-	void	*mlx_win;
-	t_data	img;
-
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1080, 1080, "fdf");
-	img.img = mlx_new_image(mlx, 1080, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_length, &img.endian);
-	*/
+	
 	y = 0;
 	while (y < f_stack->height)
 	{
@@ -102,7 +80,6 @@ void	draw_matrix(t_fstack *f_stack)
 				bresenham(x, y, x + 1, y, f_stack);
 			if (y < f_stack->height - 1)
 				bresenham(x, y, x, y + 1, f_stack);
-			//my_mlx_pixel_put(data, y + 200, x + 300, 0xffffff);
 			x++;
 		}
 		y++;
