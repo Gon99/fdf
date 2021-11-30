@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/29 16:09:47 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:00:26 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+/*void	handle_color()
+{
+
+}*/
+
 void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 {
 	float	dx;
@@ -28,8 +33,8 @@ void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 	int		z1;
 	int		max;
 
-	z = f_stack->matrix[(int)y][(int)x];
-	z1 = f_stack->matrix[(int)y1][(int)x1];
+	z = f_stack->matrix[(int)y][(int)x].z;
+	z1 = f_stack->matrix[(int)y1][(int)x1].z;
 	
 	x *= f_stack->zoom;
 	y *= f_stack->zoom;
@@ -38,6 +43,10 @@ void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 	
 	f_stack->color = 0xffffff;
 	
+	//printf("z: %d\n", f_stack->matrix[(int)y][(int)x].z);
+	//printf("co: %d\n", f_stack->matrix[(int)y][(int)x].color);
+	//printf("co2: %d\n", f_stack->color);
+	//return ;
 	isometric(&x, &y, z);
 	isometric(&x1, &y1, z1);
 	
@@ -59,7 +68,7 @@ void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 	while ((int)(x - x1) || (int)(y - y1))
 	{
 		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, f_stack->color);
-		my_mlx_pixel_put(f_stack, x, y, f_stack->color);
+		my_mlx_pixel_put(f_stack, x, y, f_stack->matrix[(int)y][(int)x].color);
 		x += dx;
 		y += dy;
 	}

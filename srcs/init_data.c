@@ -6,13 +6,13 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/29 17:35:11 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:00:23 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-void	init_height_width(int fd, t_fstack *f_stack)
+static void	init_height_width(int fd, t_fstack *f_stack)
 {
 	int		c;
 	char	*line;
@@ -41,24 +41,34 @@ void	init_height_width(int fd, t_fstack *f_stack)
 	//free(line);
 }
 
-static void	handle_color(t_fstack *f_stack, int i, int j, char **sp)
+static void	init_color_z(t_fstack *f_stack, int i, int j, char **sp)
 {
-	char	**nsp;
+	char		**nsp;
 
+	t_cmatrix **mat;
 	while (sp[i])
 	{
+		mat = malloc(sizeof(t_cmatrix));
 		if (has_comma(sp[i]))
 		{
 			nsp = ft_split(sp[i], ',');
-			f_stack->matrix[j][i] = ft_atoi(nsp[0]);
+			f_stack->matrix[j][i].z = ft_atoi(nsp[0]);
+			f_stack->matrix[j][i].color = ft_atoi(nsp[1]);
 		}
 		else
-			f_stack->matrix[j][i] = ft_atoi(sp[i]);
+		{
+			f_stack->matrix[j][i].z = ft_atoi(sp[i]);
+			if (ft_atoi(sp[i]) != 0)
+				f_stack->matrix[j][i].color = 0xe80c0c;
+			else
+				f_stack->matrix[j][i].color = 0xffffff;
+		}
 		/*else (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
 		{
 			f_stack->matrix[j][i] = ft_atoi(sp[i]);
 		
 		}*/
+		//printf("Z0: %d\n", f_stack->matrix[j][i].z);
 		i++;
 		//free(sp[i]);
 	}
@@ -83,31 +93,14 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 		f_stack->matrix[j] = malloc(sizeof(int*) * f_stack->width + 1);
 		if (!f_stack->matrix[j])
 			return ;
-		handle_color(f_stack, i, j, sp);
+		init_color_z(f_stack, i, j, sp);
 		free(line);
 		line = get_next_line(fd);
 		j++;
 	}
 }
 
-void	init_matrix(char *file, t_fstack *f_stack)
-{
-	int		fd;
-	/*char	*line;
-	char	**sp;
-	int		i;
-	int		j;*/
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return ;
-	f_stack->matrix = malloc(sizeof(int **) * f_stack->height + 1);
-	if (!f_stack->matrix)
-		return ;
-	fill_matrix(f_stack, fd);
-}
-
-void	init_mlx(t_fstack *f_stack)
+static void	init_mlx(t_fstack *f_stack)
 {
 	void	*mlx;
 	void	*mlx_win;
@@ -119,4 +112,23 @@ void	init_mlx(t_fstack *f_stack)
 	f_stack->mlx = mlx;
 	f_stack->mlx_win = mlx_win;
 	f_stack->zoom = 20;
+}
+
+void	init_matrix(int fd, char *file, t_fstack *f_stack)
+{
+	int		fd2;
+	/*char	*line;
+	char	**sp;
+	int		i;
+	int		j;*/
+
+	init_height_width(fd, f_stack);
+	fd2 = open(file, O_RDONLY);
+	if (fd2 < 0)
+		return ;
+	f_stack->matrix = malloc(sizeof(int **) * f_stack->height + 1);
+	if (!f_stack->matrix)
+		return ;
+	fill_matrix(f_stack, fd2);
+	init_mlx(f_stack);
 }

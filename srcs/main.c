@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/29 17:03:30 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:59:39 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,7 @@ int main(int argc, char **argv)
 		perror("zsh");
 		return (0);
 	}
-	init_height_width(fd, &f_stack);
-	init_matrix(argv[1], &f_stack);
-	init_mlx(&f_stack);
+	init_matrix(fd, argv[1], &f_stack);
 	draw_matrix(&f_stack);
 	//free_matrix(&f_stack);
 	return (1);
