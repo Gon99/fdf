@@ -6,7 +6,7 @@
 #    By: goliano- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/15 11:51:57 by goliano-          #+#    #+#              #
-#    Updated: 2021/11/29 17:34:01 by goliano-         ###   ########.fr        #
+#    Updated: 2021/12/02 12:24:54 by goliano-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ LIB_MLX		= libmlx.dylib
 
 SRCS =	./srcs/main.c ./utils/get_next_line.c ./utils/get_next_line_utils.c \
 		./libft/ft_split.c ./libft/ft_atoi.c ./srcs/draw_matrix.c \
-		./utils/operations.c ./srcs/init_data.c ./utils/check_comma.c
+		./utils/operations.c ./srcs/init_data.c ./utils/check_comma.c \
+		./utils/hex_to_dec.c
 
 OBJS		= $(SRCS:.c=.o)
 
-FLAGS		= -Wall -Werror -Wextra
+FLAGS		= -Wall -Werror -Wextra -fsanitize=address -g3
 
 RM			= rm -rf
 
@@ -44,7 +45,7 @@ mlx_t:
 		make -C mlx
 
 $(NAME):		lib mlx_t $(OBJS)
-				$(CC) $(OBJS) -Lmlx -lmlx -framework OpenGL -framework AppKit $(CFLAGS)	-o $(NAME)
+				$(CC) $(OBJS) -Lmlx -lmlx -framework OpenGL -framework AppKit -fsanitize=address $(CFLAGS)	-o $(NAME)
 
 clean:
 		$(RM) $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/30 17:00:23 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/02 12:42:46 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,26 @@ static void	init_color_z(t_fstack *f_stack, int i, int j, char **sp)
 {
 	char		**nsp;
 
-	t_cmatrix **mat;
 	while (sp[i])
 	{
-		mat = malloc(sizeof(t_cmatrix));
+		if (sp[i][0] == '\n')
+			break ;
 		if (has_comma(sp[i]))
 		{
 			nsp = ft_split(sp[i], ',');
 			f_stack->matrix[j][i].z = ft_atoi(nsp[0]);
-			f_stack->matrix[j][i].color = ft_atoi(nsp[1]);
+			f_stack->matrix[j][i].color = hex_to_dec(nsp[1]);
 		}
 		else
 		{
 			f_stack->matrix[j][i].z = ft_atoi(sp[i]);
-			if (ft_atoi(sp[i]) != 0)
-				f_stack->matrix[j][i].color = 0xe80c0c;
-			else
-				f_stack->matrix[j][i].color = 0xffffff;
+			f_stack->matrix[j][i].color = 0xffffff;
 		}
 		/*else (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
 		{
 			f_stack->matrix[j][i] = ft_atoi(sp[i]);
 		
 		}*/
-		//printf("Z0: %d\n", f_stack->matrix[j][i].z);
 		i++;
 		//free(sp[i]);
 	}

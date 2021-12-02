@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/30 17:00:40 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/02 11:53:01 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int		get_max(int a, int b);
 void	isometric(float *x, float *y, int z);
 void	init_matrix(int fd, char *file, t_fstack *f_stack);
 int		has_comma(char *str);
+int		hex_to_dec(char *str);
 
 #endif

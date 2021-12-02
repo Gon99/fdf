@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/11/30 17:00:26 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/02 13:33:07 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-/*void	handle_color()
-{
-
-}*/
-
 void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 {
 	float	dx;
@@ -32,18 +27,18 @@ void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 	int		z;
 	int		z1;
 	int		max;
+	float	ax = x;
+	float ay = y;
 
-	z = f_stack->matrix[(int)y][(int)x].z;
-	z1 = f_stack->matrix[(int)y1][(int)x1].z;
+	z = f_stack->matrix[(int)y][(int)x].z * f_stack->zoom;
+	z1 = f_stack->matrix[(int)y1][(int)x1].z * f_stack->zoom;
 	
 	x *= f_stack->zoom;
 	y *= f_stack->zoom;
 	x1 *= f_stack->zoom;
 	y1 *= f_stack->zoom;
 	
-	f_stack->color = 0xffffff;
-	
-	//printf("z: %d\n", f_stack->matrix[(int)y][(int)x].z);
+	//printf("z: %d\n", z);
 	//printf("co: %d\n", f_stack->matrix[(int)y][(int)x].color);
 	//printf("co2: %d\n", f_stack->color);
 	//return ;
@@ -62,13 +57,11 @@ void	bresenham(float x, float y, float x1, float y1, t_fstack *f_stack)
 
 	dx /= max;
 	dy /= max;
-	if (z > 0 || z1)
-		f_stack->color = 0xe80c0c;
 	//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, 0xffffff);
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, f_stack->color);
-		my_mlx_pixel_put(f_stack, x, y, f_stack->matrix[(int)y][(int)x].color);
+		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, f_stack->matrix[(int)ay][(int)ax].color);
+		my_mlx_pixel_put(f_stack, x, y, f_stack->matrix[(int)ay][(int)ax].color);
 		x += dx;
 		y += dy;
 	}
