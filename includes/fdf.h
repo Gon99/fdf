@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/02 11:53:01 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/07 10:54:55 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@
 
 typedef struct c_matrix
 {
-	int	z;
-	int	color;
+	float	x;
+	float	y;
+	float	z;
+	int		color;
+	int		is_last;
 }t_cmatrix;
 
 typedef struct f_stack
@@ -38,6 +41,8 @@ typedef struct f_stack
 	int			zoom;
 	void		*mlx;
 	void		*mlx_win;
+	int			win_w;
+	int			win_h;
 	void		*img;
 	char		*addr;
 	int			bpp;
@@ -54,9 +59,10 @@ int		ft_atoi(char const *s);
 void	draw_matrix(t_fstack *f_stack);
 int		get_mod(float i);
 int		get_max(int a, int b);
-void	isometric(float *x, float *y, int z);
+void	isometric(float *x, float *y, float z);
 void	init_matrix(int fd, char *file, t_fstack *f_stack);
 int		has_comma(char *str);
 int		hex_to_dec(char *str);
+
 
 #endif
