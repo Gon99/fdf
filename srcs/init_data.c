@@ -37,6 +37,7 @@ static void	init_height_width(int fd, t_fstack *f_stack)
 		line = get_next_line(fd);
 		f_stack->height++;
 	}
+	f_stack->height++;
 	close(fd);
 	//free(line);
 }
@@ -102,6 +103,7 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 		line = get_next_line(fd);
 		j++;
 	}
+	f_stack->matrix[j] = NULL;
 }
 
 static void	init_mlx(t_fstack *f_stack)
@@ -132,6 +134,8 @@ void	init_matrix(int fd, char *file, t_fstack *f_stack)
 	f_stack->height = 0;
 	init_height_width(fd, f_stack);
 	fd2 = open(file, O_RDONLY);
+	printf("H: %d\n", f_stack->height);
+	printf("W: %d\n", f_stack->width);
 	if (fd2 < 0)
 		return ;
 	f_stack->matrix = malloc(sizeof(t_cmatrix *) * f_stack->height + 1);

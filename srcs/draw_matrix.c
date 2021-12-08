@@ -17,7 +17,9 @@ void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
 	char	*dst;
 
 	dst = f_stack->addr + (y * f_stack->line_length + x * (f_stack->bpp / 8));
-	*(unsigned int*)dst = color;
+	printf("D: %s\n", dst);
+	printf("C: %d\n", color);
+	*(unsigned int *)dst = 0;
 }
 
 void	scale_coords(t_cmatrix *a, t_cmatrix *b, t_fstack *f_stack)
@@ -40,12 +42,12 @@ void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
 {
 	float	dx;
 	float	dy;
-	int		max;
-	float 	ax = a.x;
-	float	ay = a.y;
-	//float	ax = x;
-	//float ay = y;
+	float	max;
+	int	color;
+	//float	ax = a.x;
+	//float ay = a.y;
 
+	color = f_stack->matrix[(int)a.y][(int)a.x].color;
 	//printf("z: %d\n", z);
 	//printf("co: %d\n", f_stack->matrix[(int)y][(int)x].color);
 	//printf("co2: %d\n", f_stack->color);
@@ -67,14 +69,16 @@ void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
 
 	dx /= max;
 	dy /= max;
+	//color = (b.z || a.z) ? 0xfc0345 : 0xBBFAFF;
+	//color = (b.z != a.z) ? 0xfc031c : color;
 	/*printf("DX: %f\n", dx);
 	printf("DY: %f\n", dy);
 	return ;*/
-	//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, x, y, 0xffffff);
+	//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, 0xffffff);
 	while ((int)(a.x - b.x) || (int)(a.y - b.y))
 	{
-		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, f_stack->matrix[(int)ay][(int)ax].color);
-		my_mlx_pixel_put(f_stack, a.x, a.y, f_stack->matrix[(int)ay][(int)ax].color);
+		mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, color);
+		//my_mlx_pixel_put(f_stack, a.x, a.y, color);
 		a.x += dx;
 		a.y += dy;
 		if (a.x > f_stack->win_w || a.y > f_stack->win_h || a.y < 0 || a.x < 0)
@@ -96,16 +100,22 @@ void	draw_matrix(t_fstack *f_stack)
 	int	y;
 	
 	y = 0;
-	while (y < f_stack->height)
+	while (f_stack->matrix[y])
 	{
 		x = 0;
-		while (x < f_stack->width)
+		while (1)
 		{
-			if (y < f_stack->height - 1)
+			if (f_stack->matrix[y + 1])
+				bresenham(f_stack->matrix[y][x], f_stack->matrix[y + 1][x], f_stack);
+			if (!f_stack->matrix[y][x].is_last)
+				bresenham(f_stack->matrix[y][x], f_stack->matrix[y][x + 1], f_stack);
+			if (f_stack->matrix[y][x].is_last)
+				break ;
+			/*if (y < f_stack->height - 1)
 				bresenham(f_stack->matrix[y][x], f_stack->matrix[y + 1][x], f_stack);
 			if (x < f_stack->width - 1)
 				bresenham(f_stack->matrix[y][x], f_stack->matrix[y][x + 1], f_stack);
-			/*if (!f_stack->matrix[y][x].is_last)
+			if (!f_stack->matrix[y][x].is_last)
 				bresenham(f_stack->matrix[y][x], f_stack->matrix[y][x + 1], f_stack);
 			if (f_stack->matrix[y][x].is_last)
 				break ;*/
@@ -114,8 +124,8 @@ void	draw_matrix(t_fstack *f_stack)
 		y++;
 	}
 	mlx_put_image_to_window(f_stack->mlx, f_stack->mlx_win, f_stack->img, 0, 0);
+	mlx_loop(f_stack->mlx);
 	/*
 	mlx_key_hook(f_stack->mlx_win, key_hook, f_stack);
-	mlx_loop(f_stack->mlx);
 	*/
 }

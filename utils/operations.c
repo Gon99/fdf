@@ -12,9 +12,9 @@
 
 #include "../includes/fdf.h"
 
-int	get_mod(float i)
+float	get_mod(float i)
 {
-	int	r;
+	float	r;
 
 	r = i;
 	if (i < 0)
@@ -22,9 +22,9 @@ int	get_mod(float i)
 	return (r);
 }
 
-int	get_max(int a, int b)
+float	get_max(float a, float b)
 {
-	int	r;
+	float	r;
 
 	r = a;
 	if (b > a)

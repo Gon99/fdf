@@ -156,6 +156,7 @@
 
 int close_win(int keycode, t_fstack *f_stack)
 {
+	printf("KE: %d\n", keycode);
 	if (keycode == 53)
 	{
 		mlx_destroy_window(f_stack->mlx, f_stack->mlx_win);
@@ -181,7 +182,7 @@ int main(int argc, char **argv)
 	init_matrix(fd, argv[1], &f_stack);
 	draw_matrix(&f_stack);
 	mlx_hook(f_stack.mlx_win, 2, 1L<<0, close_win, &f_stack);
-	mlx_loop(f_stack.mlx);
+	//mlx_loop(f_stack.mlx);
 	//free_matrix(&f_stack);
 	return (1);
 }
