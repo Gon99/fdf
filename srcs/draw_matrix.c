@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/07 16:00:11 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/09 17:55:41 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,23 @@ void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
 
 void	scale_coords(t_cmatrix *a, t_cmatrix *b, t_fstack *f_stack)
 {
+	isometric(&(a->x), &(a->y), a->z);
+	isometric(&(b->x), &(b->y), b->z);
+	/* x4 MARS */
 	a->x = a->x * f_stack->zoom;
 	a->y = a->y * f_stack->zoom;
+	//a->x = a->x * 4;
+	//a->y = a->y * 4;
 	a->z = a->z * f_stack->zoom;
 	b->x = b->x * f_stack->zoom;
 	b->y = b->y * f_stack->zoom;
+	//b->x = b->x * 4;
+	//b->y = b->y * 4;
 	b->z = b->z * f_stack->zoom;
-	isometric(&(a->x), &(a->y), a->z);
-	isometric(&(b->x), &(b->y), b->z);
-	a->x += f_stack->win_w / 2;
-	a->y += f_stack->win_h / 1.5;
-	b->x += f_stack->win_w / 2;
-	b->y += f_stack->win_h / 1.5;
+	a->x += f_stack->win_w / 3;
+	a->y += f_stack->win_h / 3;
+	b->x += f_stack->win_w / 3;
+	b->y += f_stack->win_h / 3;
 }
 
 void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
@@ -77,12 +82,12 @@ void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
 	//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, 0xffffff);
 	while ((int)(a.x - b.x) || (int)(a.y - b.y))
 	{
-		mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, color);
-		//my_mlx_pixel_put(f_stack, a.x, a.y, color);
-		a.x += dx;
-		a.y += dy;
 		if (a.x > f_stack->win_w || a.y > f_stack->win_h || a.y < 0 || a.x < 0)
 			break ;
+		mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, color);
+		//my_mlx_pixel_put(f_stack, a.y, a.x, color);
+		a.x += dx;
+		a.y += dy;
 	}
 }
 
@@ -124,7 +129,7 @@ void	draw_matrix(t_fstack *f_stack)
 		y++;
 	}
 	mlx_put_image_to_window(f_stack->mlx, f_stack->mlx_win, f_stack->img, 0, 0);
-	mlx_loop(f_stack->mlx);
+	//mlx_loop(f_stack->mlx);
 	/*
 	mlx_key_hook(f_stack->mlx_win, key_hook, f_stack);
 	*/

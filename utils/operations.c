@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 15:31:34 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/07 11:16:41 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/09 17:46:41 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ float	get_max(float a, float b)
 
 void	isometric(float *x, float *y, float z)
 {
+	//0.523599
 	*x = (*x - *y) * cos(0.8);
 	*y = (*x + *y) * sin(0.8) - z;
 }
