@@ -6,41 +6,38 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:22:31 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/09 17:55:41 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:13:00 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/fdf.h"
 
-void	my_mlx_pixel_put(t_fstack *f_stack, int x, int y, int color)
+void	my_mlx_pixel_put(t_fstack *f_stack, float x, float  y, int color)
 {
 	char	*dst;
 
-	dst = f_stack->addr + (y * f_stack->line_length + x * (f_stack->bpp / 8));
-	printf("D: %s\n", dst);
-	printf("C: %d\n", color);
-	*(unsigned int *)dst = 0;
+	dst = f_stack->addr + ((int)y * f_stack->line_length + (int)x * (f_stack->bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
 void	scale_coords(t_cmatrix *a, t_cmatrix *b, t_fstack *f_stack)
 {
+	//a->z = a->z * f_stack->z_scale;
+	//b->z = b->z * f_stack->z_scale;
+	//printf("AZ: %f\n", a->z);
+	//printf("BZ: %f\n", b->z);
 	isometric(&(a->x), &(a->y), a->z);
 	isometric(&(b->x), &(b->y), b->z);
 	/* x4 MARS */
 	a->x = a->x * f_stack->zoom;
 	a->y = a->y * f_stack->zoom;
-	//a->x = a->x * 4;
-	//a->y = a->y * 4;
-	a->z = a->z * f_stack->zoom;
 	b->x = b->x * f_stack->zoom;
 	b->y = b->y * f_stack->zoom;
-	//b->x = b->x * 4;
-	//b->y = b->y * 4;
-	b->z = b->z * f_stack->zoom;
-	a->x += f_stack->win_w / 3;
-	a->y += f_stack->win_h / 3;
-	b->x += f_stack->win_w / 3;
-	b->y += f_stack->win_h / 3;
+	
+	a->x += f_stack->win_w / 2;
+	a->y += f_stack->win_h / 2;
+	b->x += f_stack->win_w / 2;
+	b->y += f_stack->win_h / 2;
 }
 
 void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
@@ -84,8 +81,8 @@ void	bresenham(t_cmatrix a, t_cmatrix b, t_fstack *f_stack)
 	{
 		if (a.x > f_stack->win_w || a.y > f_stack->win_h || a.y < 0 || a.x < 0)
 			break ;
-		mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, color);
-		//my_mlx_pixel_put(f_stack, a.y, a.x, color);
+		//mlx_pixel_put(f_stack->mlx, f_stack->mlx_win, a.x, a.y, color);
+		my_mlx_pixel_put(f_stack, a.x, a.y, color);
 		a.x += dx;
 		a.y += dy;
 	}

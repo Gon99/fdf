@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/09 16:13:41 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:12:58 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,25 @@ static void	init_color_z(t_fstack *f_stack, int j, char **sp)
 	//free(sp);
 }
 
+/*int		ft_wdcounter(char const *str, char c)
+{
+	int i;
+	int words;
+
+	words = 0;
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] == c && str[i] != '\0')
+			i++;
+		if (str[i])
+			words++;
+		while (str[i] != c && str[i] != '\0')
+			i++;
+	}
+	return (words);
+}*/
+
 static void	fill_matrix(t_fstack *f_stack, int fd)
 {
 	int		j;
@@ -90,6 +109,7 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 
 	line = get_next_line(fd);
 	j = 0;
+//	int width = ft_wdcounter(line, ' ');
 	while (line)
 	{
 		sp = ft_split(line, ' ');
@@ -108,18 +128,18 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 
 static void	init_mlx(t_fstack *f_stack)
 {
-	void	*mlx;
-	void	*mlx_win;
-	
-	mlx = mlx_init();
+	f_stack->mlx = mlx_init();
 	f_stack->win_w = 1080;
-	f_stack->win_h = 720;
-	f_stack->img = mlx_new_image(mlx, f_stack->win_w, f_stack->win_h);
+	f_stack->win_h = 1080;
+	f_stack->img = mlx_new_image(f_stack->mlx, f_stack->win_w, f_stack->win_h);
 	f_stack->addr = mlx_get_data_addr(f_stack->img, &f_stack->bpp, &f_stack->line_length, &f_stack->endian);
-	f_stack->mlx = mlx;
-	f_stack->zoom = 20;
-	mlx_win = mlx_new_window(mlx, f_stack->win_w, f_stack->win_h, "fdf");
-	f_stack->mlx_win = mlx_win;
+	f_stack->zoom = 15;
+	//f_stack->z_scale = 0.5;
+	if (f_stack->width > 50)
+		f_stack->zoom = 4;
+	if (f_stack->width > 200)
+		f_stack->zoom = 2;
+	f_stack->mlx_win =  mlx_new_window(f_stack->mlx, f_stack->win_w, f_stack->win_h, "fdf");
 }
 
 void	init_matrix(int fd, char *file, t_fstack *f_stack)
@@ -133,9 +153,9 @@ void	init_matrix(int fd, char *file, t_fstack *f_stack)
 	f_stack->width = 0;
 	f_stack->height = 0;
 	init_height_width(fd, f_stack);
-	fd2 = open(file, O_RDONLY);
 	printf("H: %d\n", f_stack->height);
 	printf("W: %d\n", f_stack->width);
+	fd2 = open(file, O_RDONLY);
 	if (fd2 < 0)
 		return ;
 	f_stack->matrix = malloc(sizeof(t_cmatrix *) * f_stack->height + 1);

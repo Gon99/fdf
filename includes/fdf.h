@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/07 10:54:55 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:13:02 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct f_stack
 	void		*img;
 	char		*addr;
 	int			bpp;
+	float		z_scale;
 	int			line_length;
 	int			endian;
 	int			color;
