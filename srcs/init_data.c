@@ -6,40 +6,40 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 13:12:58 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/13 16:40:13 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-static void	init_height_width(int fd, t_fstack *f_stack)
+static int	init_height_width(int fd, t_fstack *f_stack)
 {
-	int		c;
 	char	*line;
-	char	**sp;
+	int		r;
 
+	r = 0;
 	line = get_next_line(fd);
-	sp = ft_split(line, ' ');
-	if (!sp)
-		return ;
-	c = 0;
-	while (sp[c])
+	f_stack->width = get_map_width(line, ' ');
+	while (line && r >= 0)
 	{
-		if (sp[c][0] == '0' || ft_atoi(sp[c]) != 0)
-			f_stack->width++;
-		//free(sp[c]);
-		c++;
-	}
-	//free(sp);
-	while (line)
-	{
-		//free(line);
+		free(line);
+		if (line[0])
+		{
+			printf("LINE: %s\n", line);
+			printf("W: %d\n", get_map_width(line, ' '));
+		
+		}
 		line = get_next_line(fd);
+		if (line[0] && line && f_stack->width != get_map_width(line, ' '))
+			r = -1;
 		f_stack->height++;
 	}
+	free(line);
+	printf("W: %d\n", f_stack->width);
+	printf("h: %d\n", f_stack->height);
 	f_stack->height++;
 	close(fd);
-	//free(line);
+	return (r);
 }
 
 static void	init_color_z(t_fstack *f_stack, int j, char **sp)
@@ -69,37 +69,11 @@ static void	init_color_z(t_fstack *f_stack, int j, char **sp)
 		f_stack->matrix[j][i].x = i;
 		f_stack->matrix[j][i].y = j;
 		f_stack->matrix[j][i].is_last = 0;
-		
-		/**else (ft_atoi(sp[i]) != 0 || sp[i][0] == '0')
-		{
-			f_stack->matrix[j][i] = ft_atoi(sp[i]);
-		
-		}*/
-		i++;
-		//free(sp[i]);
+		free(sp[i++]);
 	}
 	f_stack->matrix[j][--i].is_last = 1;
-	//free(sp);
+	free(sp);
 }
-
-/*int		ft_wdcounter(char const *str, char c)
-{
-	int i;
-	int words;
-
-	words = 0;
-	i = 0;
-	while (str[i])
-	{
-		while (str[i] == c && str[i] != '\0')
-			i++;
-		if (str[i])
-			words++;
-		while (str[i] != c && str[i] != '\0')
-			i++;
-	}
-	return (words);
-}*/
 
 static void	fill_matrix(t_fstack *f_stack, int fd)
 {
@@ -109,7 +83,6 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 
 	line = get_next_line(fd);
 	j = 0;
-//	int width = ft_wdcounter(line, ' ');
 	while (line)
 	{
 		sp = ft_split(line, ' ');
@@ -134,7 +107,6 @@ static void	init_mlx(t_fstack *f_stack)
 	f_stack->img = mlx_new_image(f_stack->mlx, f_stack->win_w, f_stack->win_h);
 	f_stack->addr = mlx_get_data_addr(f_stack->img, &f_stack->bpp, &f_stack->line_length, &f_stack->endian);
 	f_stack->zoom = 15;
-	//f_stack->z_scale = 0.5;
 	if (f_stack->width > 50)
 		f_stack->zoom = 4;
 	if (f_stack->width > 200)
@@ -142,25 +114,23 @@ static void	init_mlx(t_fstack *f_stack)
 	f_stack->mlx_win =  mlx_new_window(f_stack->mlx, f_stack->win_w, f_stack->win_h, "fdf");
 }
 
-void	init_matrix(int fd, char *file, t_fstack *f_stack)
+int	init_matrix(int fd, char *file, t_fstack *f_stack)
 {
 	int		fd2;
-	/*char	*line;
-	char	**sp;
-	int		i;
-	int		j;*/
+	int		r;
 
 	f_stack->width = 0;
 	f_stack->height = 0;
-	init_height_width(fd, f_stack);
-	printf("H: %d\n", f_stack->height);
-	printf("W: %d\n", f_stack->width);
+	r = init_height_width(fd, f_stack);
+	if (r < 0)
+		return (r);
 	fd2 = open(file, O_RDONLY);
 	if (fd2 < 0)
-		return ;
+		return (-1);
 	f_stack->matrix = malloc(sizeof(t_cmatrix *) * f_stack->height + 1);
 	if (!f_stack->matrix)
-		return ;
+		return (-1);
 	fill_matrix(f_stack, fd2);
 	init_mlx(f_stack);
+	return (r);
 }

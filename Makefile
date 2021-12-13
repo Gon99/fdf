@@ -6,7 +6,7 @@
 #    By: goliano- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/09 12:07:52 by goliano-          #+#    #+#              #
-#    Updated: 2021/12/09 12:09:13 by goliano-         ###   ########.fr        #
+#    Updated: 2021/12/13 16:40:17 by goliano-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,11 @@ LIB_MLX		= libmlx.dylib
 SRCS =	./srcs/main.c ./utils/get_next_line.c ./utils/get_next_line_utils.c \
 		./libft/ft_split.c ./libft/ft_atoi.c ./srcs/draw_matrix.c \
 		./utils/operations.c ./srcs/init_data.c ./utils/check_comma.c \
-		./utils/hex_to_dec.c
+		./utils/hex_to_dec.c ./utils/get_map_width.c
 
 OBJS		= $(SRCS:.c=.o)
 
-FLAGS		= -Wall -Werror -Wextra -fsanitize=address -g3
+FLAGS		= -Wall -Werror -Wextra
 
 RM			= rm -rf
 
@@ -38,14 +38,14 @@ $(LIB_MLX):		$(MLX_OBJS)
 			ar -r $(LIB_MLX) $(MLX_OBJS)
 			ranlib $(LIB_MLX)
 
-lib:
+libft/libft.a:
 		make -C libft
 
 mlx_t:
 		make -C mlx
 
-$(NAME):		lib mlx_t $(OBJS)
-				$(CC) $(OBJS) -Lmlx -lmlx -framework OpenGL -framework AppKit -fsanitize=address $(CFLAGS)	-o $(NAME)
+$(NAME):		libft/libft.a $(OBJS)
+				$(CC) $(OBJS) -Lmlx -lmlx -framework OpenGL -framework AppKit $(CFLAGS)	-o $(NAME)
 
 clean:
 		$(RM) $(OBJS)

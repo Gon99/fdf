@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 13:13:02 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/13 16:40:11 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <math.h>
 
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
+#  define BUFFER_SIZE 100
 # endif
 
 typedef struct c_matrix
@@ -52,18 +52,18 @@ typedef struct f_stack
 	int			color;
 }	t_fstack;
 
-char	*get_next_line(int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(char const *str);
-char	**ft_split(char const *s, char c);
-int		ft_atoi(char const *s);
-void	draw_matrix(t_fstack *f_stack);
+char		*get_next_line(int fd);
+char		*ft_strjoin(char const *s1, char const *s2);
+size_t		ft_strlen(char const *str);
+char		**ft_split(char const *s, char c);
+int			ft_atoi(char const *s);
+void		draw_matrix(t_fstack *f_stack);
 float		get_mod(float i);
 float		get_max(float a, float b);
-void	isometric(float *x, float *y, float z);
-void	init_matrix(int fd, char *file, t_fstack *f_stack);
-int		has_comma(char *str);
-int		hex_to_dec(char *str);
-
+void		isometric(float *x, float *y, float z);
+int			init_matrix(int fd, char *file, t_fstack *f_stack);
+int			has_comma(char *str);
+int			hex_to_dec(char *str);
+int			get_map_width(const char *str, char c);
 
 #endif

@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operations.c                                       :+:      :+:    :+:   */
+/*   get_map_width.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/29 15:31:34 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 13:29:14 by goliano-         ###   ########.fr       */
+/*   Created: 2021/12/13 15:20:52 by goliano-          #+#    #+#             */
+/*   Updated: 2021/12/13 15:57:13 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-float	get_mod(float i)
+int	get_map_width(const char *str, char c)
 {
-	float	r;
+	int	width;
+	int	i;
 
-	r = i;
-	if (i < 0)
-		r = -i;
-	return (r);
-}
-
-float	get_max(float a, float b)
-{
-	float	r;
-
-	r = a;
-	if (b > a)
-		r = b;
-	return (r);
-}
-
-void	isometric(float *x, float *y, float z)
-{
-	*x = (*x - *y) * cos(0.8);
-	*y = (*x + *y) * sin(0.8) - z;
+	i = 0;
+	width = 0;
+	while (str[i])
+	{
+		while (str[i] == c && str[i])
+			i++;
+		if (str[i])
+			width++;
+		while (str[i] != c && str[i])
+			i++;
+	}
+	return (width);
 }
