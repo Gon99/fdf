@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:57:50 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 16:40:11 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/14 16:17:14 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct f_stack
 }	t_fstack;
 
 char		*get_next_line(int fd);
-char		*ft_strjoin(char const *s1, char const *s2);
 size_t		ft_strlen(char const *str);
 char		**ft_split(char const *s, char c);
 int			ft_atoi(char const *s);
@@ -65,5 +64,6 @@ int			init_matrix(int fd, char *file, t_fstack *f_stack);
 int			has_comma(char *str);
 int			hex_to_dec(char *str);
 int			get_map_width(const char *str, char c);
+int			check_line_width(const char *str);
 
 #endif

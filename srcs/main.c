@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 16:25:06 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/14 16:20:24 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,21 @@ void	leaks()
 	system("leaks -q fdf");
 }
 
-int	close_win(int keycode, t_fstack *f_stack)
+static void	free_matrix(t_fstack *f_stack)
+{
+	int	i;
+
+	i = 0;
+	while (i < f_stack->height)
+		free(f_stack->matrix[i++]);
+	free(f_stack->matrix);
+}
+
+static int	close_win(int keycode, t_fstack *f_stack)
 {
 	if (keycode == 53)
 	{
+		free_matrix(f_stack);
 		mlx_destroy_window(f_stack->mlx, f_stack->mlx_win);
 		exit(1);
 	}
@@ -49,6 +60,10 @@ int	main(int argc, char **argv)
 	draw_matrix(&f_stack);
 	mlx_hook(f_stack.mlx_win, 2, 1L << 0, close_win, &f_stack);
 	mlx_loop(f_stack.mlx);
-	//free_matrix(&f_stack);
+	/*free(f_stack.mlx);
+	free(f_stack.mlx_win);
+	free(f_stack.img);
+	free(f_stack.addr);*/
+	free_matrix(&f_stack);
 	return (1);
 }

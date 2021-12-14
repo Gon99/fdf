@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/13 16:40:13 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/14 16:20:25 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,23 @@
 static int	init_height_width(int fd, t_fstack *f_stack)
 {
 	char	*line;
-	int		r;
+	int		lw;
 
-	r = 0;
 	line = get_next_line(fd);
-	f_stack->width = get_map_width(line, ' ');
-	while (line && r >= 0)
+	f_stack->width = check_line_width(line);
+	while (line)
 	{
+		lw = check_line_width(line);
 		free(line);
-		if (line[0])
-		{
-			printf("LINE: %s\n", line);
-			printf("W: %d\n", get_map_width(line, ' '));
-		
-		}
+		if (lw != f_stack->width)
+			return (-1);
 		line = get_next_line(fd);
-		if (line[0] && line && f_stack->width != get_map_width(line, ' '))
-			r = -1;
 		f_stack->height++;
 	}
 	free(line);
-	printf("W: %d\n", f_stack->width);
-	printf("h: %d\n", f_stack->height);
 	f_stack->height++;
 	close(fd);
-	return (r);
+	return (1);
 }
 
 static void	init_color_z(t_fstack *f_stack, int j, char **sp)
@@ -57,8 +49,8 @@ static void	init_color_z(t_fstack *f_stack, int j, char **sp)
 			nsp = ft_split(sp[i], ',');
 			f_stack->matrix[j][i].z = ft_atoi(nsp[0]);
 			f_stack->matrix[j][i].color = hex_to_dec(nsp[1]);
-			//free(nsp[0]);
-			//free(nsp[1]);
+			free(nsp[0]);
+			free(nsp[1]);
 			free(nsp);
 		}
 		else
@@ -71,8 +63,8 @@ static void	init_color_z(t_fstack *f_stack, int j, char **sp)
 		f_stack->matrix[j][i].is_last = 0;
 		free(sp[i++]);
 	}
+	free(sp[i]);
 	f_stack->matrix[j][--i].is_last = 1;
-	free(sp);
 }
 
 static void	fill_matrix(t_fstack *f_stack, int fd)
@@ -86,16 +78,17 @@ static void	fill_matrix(t_fstack *f_stack, int fd)
 	while (line)
 	{
 		sp = ft_split(line, ' ');
-		if (!sp)
-			return ;
 		f_stack->matrix[j] = malloc(sizeof(t_cmatrix) * f_stack->width + 1);
 		if (!f_stack->matrix[j])
 			return ;
 		init_color_z(f_stack, j, sp);
 		free(line);
+		free(sp);
 		line = get_next_line(fd);
 		j++;
 	}
+	free(line);
+	close(fd);
 	f_stack->matrix[j] = NULL;
 }
 
