@@ -6,16 +6,11 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:56:40 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/14 16:20:24 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/15 12:32:07 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
-
-void	leaks()
-{
-	system("leaks -q fdf");
-}
 
 static void	free_matrix(t_fstack *f_stack)
 {
@@ -38,6 +33,11 @@ static int	close_win(int keycode, t_fstack *f_stack)
 	return (1);
 }
 
+void leaks()
+{
+	system("leaks -q fdf");
+}
+
 int	main(int argc, char **argv)
 {
 	int			fd;
@@ -54,16 +54,12 @@ int	main(int argc, char **argv)
 	}
 	if (init_matrix(fd, argv[1], &f_stack) < 0)
 	{
-		printf("error matrix");
+		write(1, "Map Error\n", 10);
 		return (-1);
 	}
 	draw_matrix(&f_stack);
 	mlx_hook(f_stack.mlx_win, 2, 1L << 0, close_win, &f_stack);
 	mlx_loop(f_stack.mlx);
-	/*free(f_stack.mlx);
-	free(f_stack.mlx_win);
-	free(f_stack.img);
-	free(f_stack.addr);*/
 	free_matrix(&f_stack);
 	return (1);
 }

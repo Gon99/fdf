@@ -6,7 +6,7 @@
 #    By: goliano- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/09 12:07:52 by goliano-          #+#    #+#              #
-#    Updated: 2021/12/13 16:40:17 by goliano-         ###   ########.fr        #
+#    Updated: 2021/12/15 12:32:29 by goliano-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIB_MLX		= libmlx.dylib
 
 SRCS =	./srcs/main.c ./utils/get_next_line.c ./utils/get_next_line_utils.c \
 		./libft/ft_split.c ./libft/ft_atoi.c ./srcs/draw_matrix.c \
-		./utils/operations.c ./srcs/init_data.c ./utils/check_comma.c \
+		./utils/operations.c ./srcs/init_data.c ./utils/handle_colored_map.c \
 		./utils/hex_to_dec.c ./utils/get_map_width.c
 
 OBJS		= $(SRCS:.c=.o)

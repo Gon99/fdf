@@ -6,7 +6,7 @@
 /*   By: goliano- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:13:06 by goliano-          #+#    #+#             */
-/*   Updated: 2021/12/14 16:20:25 by goliano-         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:13:13 by goliano-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,15 @@ static int	init_height_width(int fd, t_fstack *f_stack)
 static void	init_color_z(t_fstack *f_stack, int j, char **sp)
 {
 	char		**nsp;
-	int	i;
-	
+	int			i;
+
 	i = 0;
-	while (sp[i])
+	while (sp[i] && sp[i][0] != '\n')
 	{
-		if (sp[i][0] == '\n')
-			break ;
 		if (has_comma(sp[i]))
 		{
 			nsp = ft_split(sp[i], ',');
-			f_stack->matrix[j][i].z = ft_atoi(nsp[0]);
-			f_stack->matrix[j][i].color = hex_to_dec(nsp[1]);
-			free(nsp[0]);
-			free(nsp[1]);
-			free(nsp);
+			handle_colored_map(f_stack, nsp, j, i);
 		}
 		else
 		{
@@ -98,13 +92,16 @@ static void	init_mlx(t_fstack *f_stack)
 	f_stack->win_w = 1080;
 	f_stack->win_h = 1080;
 	f_stack->img = mlx_new_image(f_stack->mlx, f_stack->win_w, f_stack->win_h);
-	f_stack->addr = mlx_get_data_addr(f_stack->img, &f_stack->bpp, &f_stack->line_length, &f_stack->endian);
+	printf("IMF: %p\n", f_stack->img);
+	f_stack->addr = mlx_get_data_addr(f_stack->img, &f_stack->bpp, \
+			&f_stack->line_length, &f_stack->endian);
 	f_stack->zoom = 15;
 	if (f_stack->width > 50)
 		f_stack->zoom = 4;
 	if (f_stack->width > 200)
 		f_stack->zoom = 2;
-	f_stack->mlx_win =  mlx_new_window(f_stack->mlx, f_stack->win_w, f_stack->win_h, "fdf");
+	f_stack->mlx_win = mlx_new_window(f_stack->mlx, f_stack->win_w, \
+		   	f_stack->win_h, "fdf");
 }
 
 int	init_matrix(int fd, char *file, t_fstack *f_stack)
