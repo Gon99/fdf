@@ -33,17 +33,11 @@ static int	close_win(int keycode, t_fstack *f_stack)
 	return (1);
 }
 
-void leaks()
-{
-	system("leaks -q fdf");
-}
-
 int	main(int argc, char **argv)
 {
 	int			fd;
 	t_fstack	f_stack;
 
-	atexit(leaks);
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);

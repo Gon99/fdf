@@ -92,7 +92,6 @@ static void	init_mlx(t_fstack *f_stack)
 	f_stack->win_w = 1080;
 	f_stack->win_h = 1080;
 	f_stack->img = mlx_new_image(f_stack->mlx, f_stack->win_w, f_stack->win_h);
-	printf("IMF: %p\n", f_stack->img);
 	f_stack->addr = mlx_get_data_addr(f_stack->img, &f_stack->bpp, \
 			&f_stack->line_length, &f_stack->endian);
 	f_stack->zoom = 15;
