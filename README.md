@@ -48,11 +48,11 @@ The fdf programs is used as follows:
 
 ## Visualizer
 42
-(https://github.com/Gon99/fdf/blob/master/42-fdf.png)
+[42 map](https://github.com/Gon99/fdf/blob/master/42-fdf.png)
 
 Mars
-(https://github.com/Gon99/fdf/blob/master/mars-fdf.png)
+[mars map](https://github.com/Gon99/fdf/blob/master/mars-fdf.png)
 
 Julia (colored)
 
-(https://github.com/Gon99/fdf/blob/master/julia-fdf.png)
+[julia map](https://github.com/Gon99/fdf/blob/master/julia-fdf.png)
