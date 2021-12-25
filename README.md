@@ -4,7 +4,7 @@
 
 FdF is a 3D Wireframe Viewer.
 
-In this project you I learn about the basics of graphic programming, and in particular how to place points in space, how to join them with segments and most importantly how to observe the scene from a particular viewpoint. I also discover a graphic library called miniLibX. This library was developed internally and includes the minimum necessary to open a window, light a pixel and deal with events linked to this window: keyboard and mouse. This project also introduces you to “events” programming.
+In this project I learn about the basics of graphic programming, and in particular how to place points in space, how to join them with segments and most importantly how to observe the scene from a particular viewpoint. I also discover a graphic library called miniLibX. This library was developed internally and includes the minimum necessary to open a window, light a pixel and deal with events linked to this window: keyboard and mouse.
 
 ## Approach
 To draw the different shapes provided by the school or created by myself, I have implemented the bresenham algorithm, which determines the points of an n-dimensional raster that should be selected in order to form a close approximation to a straight line between two points. It is one of the earliest and easiest algorithms developed in the field of computer graphics.
@@ -17,17 +17,19 @@ Here you learn about it:
 ## Maps
 This is the map format we have to deal to draw the different figures.
 
-0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\
-0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\
-0  0 10 10  0  0 10 10  0  0  0 10 10 10 10 10  0  0  0\
-0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0\
-0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0\
-0  0 10 10 10 10 10 10  0  0  0  0 10 10 10 10  0  0  0\
-0  0  0 10 10 10 10 10  0  0  0 10 10  0  0  0  0  0  0\
-0  0  0  0  0  0 10 10  0  0  0 10 10  0  0  0  0  0  0\
-0  0  0  0  0  0 10 10  0  0  0 10 10 10 10 10 10  0  0\
-0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\
-0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0\
+```
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0 10 10  0  0 10 10  0  0  0 10 10 10 10 10  0  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10 10 10 10 10  0  0  0  0 10 10 10 10  0  0  0
+0  0  0 10 10 10 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10 10 10 10 10  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+```
 
 Each number corresponds to a point in space:
 
